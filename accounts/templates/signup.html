@@ -83,32 +83,38 @@
         </div>
           
     </div>
-    <div class="row justify-content-end">
-        {% if messages %}
-        <div class="alert-container col-3 mt-2">
-            {% for message in messages %}
-                {% if message.tags == "error" %}
-                    <div class="alert alert-danger alert-dismissible fade show " role="alert">
-                        {{ message }}
-                    </div>
-                {% else %}
-                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
-                <script>
-                
-                    setTimeout(function() {
-                        document.querySelector('.alert').classList.remove('show');
-                        document.querySelector('.alert').classList.add('hide');
-                    }, 5000);
-                </script>
-            {% endfor %}
-        </div>
-        {% endif %}
-        
-      </div>
-   </div>
-    <!-- /.register-box -->
 
+    <!-- render messages -->
+    
+      {% if messages %}
+   
+        <script>
+          var messages = [];
+        </script>
+        {% for message in messages %}
+        <script>
+          messages.push({
+            "message": "{{ message.message }}",
+            "tag": "{{ message.tags }}"
+          });
+        </script>
+        {% endfor %}
+      {% endif %}
+
+   </div>
+
+    <script>
+      $(function(){
+        messages.forEach(function(message) {
+          if (message.tag === "success") {
+            toastr.success(message.message);
+          } else if (message.tag=== "error") {
+            toastr.error(message.message); 
+          } else {
+            
+            toastr.info(message.message);
+          }
+        });
+      });
+    </script>
     {% endblock %}

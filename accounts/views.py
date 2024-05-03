@@ -104,8 +104,7 @@ def signupPage(request):
                     response=api.performMuttion(mutation,variables)
                     if 'errors' in response:
                         print(response['errors'])
-                        messages.error(request,response['erros'][0]['message'])
-                        return JsonResponse(response)
+                        messages.error(request,response['errors'][0]['message'])
                     elif 'data' in response:
                         print("Opertion was successfully")
                         accountId=response['data']['createAccount']['id']
@@ -114,7 +113,7 @@ def signupPage(request):
                     else:
                         print("Unexpected erros occurred")
                         messages.error(request,"Unexpected erros occurred")   
-                        return JsonResponse(response)
+                        
                 else:
                     print("Password musb be atleast 5")   
                     messages.error(request,"Password musb be atleast 5") 
