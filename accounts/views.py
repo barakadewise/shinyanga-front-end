@@ -9,6 +9,9 @@ from api.api import ApiService
 # api instancee
 api =ApiService()
 
+ADMIN='admin'
+MEMBER='Member'
+
 #loging function 
 def loginPage(request):
     if request.method == 'POST':
@@ -39,7 +42,7 @@ def loginPage(request):
 
      
         if 'errors' in response:
-            messages.error(request,response['errors'])
+            messages.error(request,response['errors'][0]['message'])
             print('Error:',response)
             return render(request,'login.html')
 
@@ -50,7 +53,12 @@ def loginPage(request):
            if data and 'access_token' in data:
                print(data['access_token'])
                messages.success(request,data['message'])
-               return render(request,'login.html',{'token':data['access_token']})
+               if data['role']==ADMIN:
+                   print('Your the admin')
+                   return render(request,'dashboard.html',{'token':data['access_token']})
+               elif data['role']==MEMBER:
+                   print('YOUR JUST A COMMON MEMBER')
+                   return render(request,'login.html',{'token':data['access_token']})
 
         else:
             print("Something went wrong")
