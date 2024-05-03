@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %} Signup  {% endblock %}</title>
+
+{% block content %}
+<style>
+    body{
+        background-color: rgb(246, 245, 245);
+        
+    }
+</style>
+
+   <div class="container-fluid" style="height: 96vh;">
+    <div class="row justify-content-center" style="margin-top: 50px;">
+        <div class="col-md-6">
+            <div class="register-logo">
+              <a href="../../index2.html"><b>Shinyanga</b>CP</a>
+            </div>
+      
+            <div class="card">
+              <div class="card-body register-card-body">
+                <h4 class="login-box-msg"><b>Register new Membership</b></h4>
+      
+                <form method="POST" role="form" action="{% url 'signup' %}">
+                    {% csrf_token %}
+                  <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" name="email" required/>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="form-group mb-3">
+                    <select class="form-control select2bs4" style="width: 100%" name="role" required>
+                      <option selected="selected">Category</option>
+                      <option>Entrepreneur</option>
+                      <option>Member</option>
+                    </select>
+                  </div> -->
+                  <div class="input-group mb-3">
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      name="password1"
+                      required
+                      minlength="5"
+                    />
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Retype password"
+                      name="password2"
+                      required
+                      minlength="5",
+                      
+                    />
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <!-- /.col -->
+                  <div class="col-">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      Register
+                    </button>
+                  </div>
+      
+                  <!-- /.col -->
+                  <div class="row justify-content-between">
+                    <p class="text-primary cursor-pointer">
+                      Have account? <a href="{% url 'login' %}">Login</a>
+                    </p>
+                  </div>
+                </form>
+              
+              </div>
+            </div>
+        </div>
+          
+    </div>
+    <div class="row justify-content-end">
+        {% if messages %}
+        <div class="alert-container col-3 mt-2">
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div class="alert alert-danger alert-dismissible fade show " role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                <script>
+                
+                    setTimeout(function() {
+                        document.querySelector('.alert').classList.remove('show');
+                        document.querySelector('.alert').classList.add('hide');
+                    }, 5000);
+                </script>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+      </div>
+   </div>
+    <!-- /.register-box -->
+
+    {% endblock %}

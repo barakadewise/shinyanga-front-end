@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %} Login {% endblock %}</title>
+
+
+{% block content %}
+<style>
+  body{
+      background-color: rgb(246, 245, 245);
+      
+  }
+</style>
+    <div class="row justify-content-center " style="margin-top: 4rem;height: 80vh;">
+
+    <div class="col-">
+      <div class="register-logo">
+        <a href="../../index2.html"><b>Shinyanga</b>CP</a>
+      </div>
+      <div class="card">
+        <div class="card-body register-card-body">
+          <h4 class="login-box-msg"><b>Login member</b></h4>
+
+          <form role="form" action="" method="POST">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Enter email"
+                name="email"
+                required
+              />
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Enter your password"
+                name="password"
+                required
+              />
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-">
+              <button type="submit" class="btn btn-primary btn-block">
+                  Login
+              </button>
+            </div>
+
+            <!-- /.col -->
+            <div class="col-">
+              <p class="text-info cursor-pointer">
+                Have no account? <a href="{% url 'signup' %}">Register</a>
+              </p>
+              <p class="text-danger">
+                Forgot Password? <a href="">reset</a>
+              </p>
+            </div>
+          </form>
+
+          <!-- /.form-box -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+    </div>
+    <!-- /.register-box -->
+
+{% endblock %}
