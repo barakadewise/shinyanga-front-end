@@ -109,7 +109,7 @@ def signupPage(request):
                     elif 'data' in response:
                         print("Opertion was successfully")
                         accountId=response['data']['createAccount']['id']
-                        messages.success(request,"Successfuly registerd")
+                        messages.success(request,"Successfuly registered")
                         return redirect('complete-profile',account_id=accountId)
                     else:
                         print("Unexpected erros occurred")
