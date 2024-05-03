@@ -3,8 +3,8 @@ from .import views
 
 
 urlpatterns = [
+    path('',views.homePage,name='homepage')
   
-   
 ]
 
 

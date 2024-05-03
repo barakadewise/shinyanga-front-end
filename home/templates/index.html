@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %} Add Event  {% endblock %}</title>
+{% block content %}
+    <style>
+      body {
+        
+        background-color:rgb(248, 248, 248);
+        margin: 0;
+      }
+      .main-content-wrapper {
+        background: url("{% static 'dist/img/image.jpg' %}"), center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 85vh;
+      }
+
+      .main-content {
+        text-align: center;
+        color: #fff;
+      }
+      html{
+        scroll-behavior: smooth;
+      }
+    </style>
+  
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+      <a class="navbar-brand font-weight-bold" href="#">SCP</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto text-white">
+          <li class="nav-item active">
+            <a class="nav-link text-lg" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-lg" href="#events">Events</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-lg" href="{% url 'login' %}"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-lg" href="{% url 'signup' %}"
+              >Register</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content-wrapper">
+      <div class="main-content">
+        <h1>Welcome to Our Website</h1>
+        <p>This is a simple and clean landing page.</p>
+        <div class="mt-4">
+          <a href="{% url 'login' %}" class="btn btn-info mr-2"
+            >Login</a
+          >
+          <a href="{% url 'signup' %}" class="btn btn-light"
+            >Register</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid mt-5" id="events" style="margin-bottom: 2rem;">
+      <div class="row">
+        <!-- Event Card 1 -->
+        <div class="col-md-4 event-card">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Event 1</h5>
+              <p class="card-text">Description of Event 1.</p>
+              <p class="card-text">Location: Venue 1</p>
+              <p class="card-text">Date: Start Date - End Date</p>
+              <a href="#" class="btn btn-primary">View More</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Card 2 -->
+        <div class="col-md-4 event-card">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Event 2</h5>
+              <p class="card-text">Description of Event 2.</p>
+              <p class="card-text">Location: Venue 2</p>
+              <p class="card-text">Date: Start Date - End Date</p>
+              <a href="#" class="btn btn-primary">View More</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Card 3 -->
+        <div class="col-md-4 event-card">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Event 3</h5>
+              <p class="card-text">Description of Event 3.</p>
+              <p class="card-text">Location: Venue 3</p>
+              <p class="card-text">Date: Start Date - End Date</p>
+              <a href="#" class="btn btn-primary">View More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-dark text-white  py-4" >
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              &copy; 2023 Shinyanga Community Platform. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-right">
+            <p>Contact us: info@shinyanga-platform.com</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+{% endblock %}
