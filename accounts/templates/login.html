@@ -12,9 +12,9 @@
 </style>
     <div class="row justify-content-center " style="margin-top: 4rem;height: 80vh;">
 
-    <div class="col-">
+    <div class="col-md-4">
       <div class="register-logo">
-        <a href="../../index2.html"><b>Shinyanga</b>CP</a>
+        <a href=""><b>Shinyanga</b>CP</a>
       </div>
       <div class="card">
         <div class="card-body register-card-body">
@@ -74,5 +74,14 @@
     </div>
     </div>
     <!-- /.register-box -->
+    <script>
+      var token="{{ token }}"
+      console.log(token)
+      if(token){
+        localStorage.setItem('token',token)
+        window.location.href="{% url 'adminDashbaord' %}"
+      }
+      console.log("Token Not found!")
+    </script>
 
 {% endblock %}

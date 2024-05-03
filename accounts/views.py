@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 import re
 from django.contrib import messages
 from django.http import JsonResponse
+from django.contrib import sessions
 
 from api.api import ApiService
 
@@ -23,6 +24,7 @@ def loginPage(request):
           }) {
             message
             access_token
+            role
           }
         }
         '''
@@ -37,14 +39,24 @@ def loginPage(request):
 
      
         if 'errors' in response:
-            print('Errors in the response')
-            print(response)
-          
-            # message = data['data']['login']['message']
-            # access_token = data['data']['login']['access_token']
+            messages.error(request,response['errors'])
+            print('Error:',response)
+            return render(request,'login.html')
+
+        elif 'data' in response:
+           print(response)
+           data =response['data']['login']
+           print('Auth Results:',data)
+           if data and 'access_token' in data:
+               print(data['access_token'])
+               messages.success(request,data['message'])
+               return render(request,'login.html',{'token':data['access_token']})
+
         else:
-            print("Successfully!")
+            print("Something went wrong")
+            messages.error(request,'Something went wrong!')
             print(response)
+            return render(request,'login.html')
 
     return render(request, 'login.html')
 
