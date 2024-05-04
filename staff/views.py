@@ -55,6 +55,7 @@ def getMembers(request):
         region
         ward
         status
+        profession
       }
     }
     '''

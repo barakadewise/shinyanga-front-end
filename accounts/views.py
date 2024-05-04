@@ -53,12 +53,18 @@ def loginPage(request):
            if data and 'access_token' in data:
                print(data['access_token'])
                messages.success(request,data['message'])
-               if data['role']==ADMIN:
-                   print('Your the admin')
-                   return render(request,'dashboard.html',{'token':data['access_token']})
-               elif data['role']==MEMBER:
-                   print('YOUR JUST A COMMON MEMBER')
-                   return render(request,'login.html',{'token':data['access_token']})
+               if data['role']==MEMBER:
+                   print('Your the MEMBER')
+                   request.session['token'] = data['access_token']
+                   if 'token' in request.session:
+                       print('picking token')
+                       print(request.session['token'])
+                   else:   
+                       print("Notthing")
+                       return render(request,'dashboard.html')
+               elif data['role']==ADMIN:
+                   print('Your the ADMIN')
+                   return render(request,'login.html',)
 
         else:
             print("Something went wrong")
@@ -80,10 +86,11 @@ def signupPage(request):
          # Construct the GraphQL mutation
         mutation = """
             mutation CreateAccount($input: CreateAccountInput!) {
-                createAccount(createAccountInput: $input) {
+                 createOtherAccount(createMemberInput: $input) {
                     id
                     email
                     password
+                    role
                 }
             }
         """
@@ -92,7 +99,7 @@ def signupPage(request):
         variables = {
             "input": {
                 "email": email,
-                "password": password1,
+                "password": password1
                 
             }
         }
@@ -107,8 +114,9 @@ def signupPage(request):
                         messages.error(request,response['errors'][0]['message'])
                     elif 'data' in response:
                         print("Opertion was successfully")
-                        accountId=response['data']['createAccount']['id']
+                        accountId=response['data']['createOtherAccount']['id']
                         messages.success(request,"Successfuly registered")
+                        # return redirect('events')
                         return redirect('complete-profile',account_id=accountId)
                     else:
                         print("Unexpected erros occurred")
