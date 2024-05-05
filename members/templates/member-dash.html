@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-<title>{% block title %} Admin |Panel {% endblock %}</title>
+<title>{% block title %} Dashboard {% endblock %}</title>
 
 
 {% block content %}
@@ -101,13 +101,13 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'events' %}" class="nav-link">
+                    <a href="{% url 'viewEvents' %}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Events</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'members' %}" class="nav-link">
+                    <a href="{% url 'viewmembers' %}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Members</p>
                     </a>
@@ -134,7 +134,7 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Dashboard</h1>
+                <h3 style="font-style: bold;">Hellow Welcome Back</h3>
               </div>
               <!-- /.col -->
               <div class="col-sm-6">
@@ -174,7 +174,7 @@
                   <div class="icon">
                     <i class="ion ion-bag"></i>
                   </div>
-                  <a href="{% url 'events' %}" class="small-box-footer"
+                  <a href="{% url 'viewEvents' %}" class="small-box-footer"
                     >More info <i class="fas fa-arrow-circle-right"></i
                   ></a>
                 </div>
@@ -234,38 +234,44 @@
       <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-      <!-- render messages -->
     
-      {% if messages %}
+    {% if messages %}
    
-        <script>
-          var messages = [];
-        </script>
-        {% for message in messages %}
-        <script>
-          messages.push({
-            "message": "{{ message.message }}",
-            "tag": "{{ message.tags }}"
-          });
-        </script>
-        {% endfor %}
-      {% endif %}
-
-  
-
     <script>
-      $(function(){
-        messages.forEach(function(message) {
-          if (message.tag === "success") {
-            toastr.success(message.message);
-          } else if (message.tag=== "error") {
-            toastr.error(message.message); 
-          } else {
-            
-            toastr.info(message.message);
-          }
-        });
+      var messages = [];
+     
+    </script>
+    {% for message in messages %}
+    <script>
+      messages.push({
+        "message": "{{ message.message }}",
+        "tag": "{{ message.tags }}"
       });
     </script>
+    {% endfor %}
+  {% endif %}
+
+
+
+<script>
+  $(function(){
+    messages.forEach(function(message) {
+      if (message.tag === "success") {
+        toastr.success(message.message);
+      } else if (message.tag=== "error") {
+        toastr.error(message.message); 
+      } else {
+        
+        toastr.info(message.message);
+      }
+    });
+  });
+</script>
+
+<script>
+    var token =""
+    localStorage.setItem(token,"{{ token }}")
+</script>
+
 
 {% endblock %}

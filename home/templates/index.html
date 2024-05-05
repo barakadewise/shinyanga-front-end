@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-<title>{% block title %} Landing Page  {% endblock %}</title>
+<title>{% block title %} Home page   {% endblock %}</title>
 {% block content %}
     <style>
       body {
@@ -78,50 +78,38 @@
       </div>
     </div>
     <div class="container-fluid mt-5" id="events" style="margin-bottom: 2rem;">
-      <div class="row">
-        <!-- Event Card 1 -->
-        <div class="col-md-4 event-card">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Event 1</h5>
-              <p class="card-text">Description of Event 1.</p>
-              <p class="card-text">Location: Venue 1</p>
-              <p class="card-text">Date: Start Date - End Date</p>
-              <a href="#" class="btn btn-primary">View More</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Event Card 2 -->
-        <div class="col-md-4 event-card">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Event 2</h5>
-              <p class="card-text">Description of Event 2.</p>
-              <p class="card-text">Location: Venue 2</p>
-              <p class="card-text">Date: Start Date - End Date</p>
-              <a href="#" class="btn btn-primary">View More</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Event Card 3 -->
-        <div class="col-md-4 event-card">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Event 3</h5>
-              <p class="card-text">Description of Event 3.</p>
-              <p class="card-text">Location: Venue 3</p>
-              <p class="card-text">Date: Start Date - End Date</p>
-              <a href="#" class="btn btn-primary">View More</a>
-            </div>
-          </div>
-        </div>
+      <div class="row justify-content-center mb-3">
+        <p class="text-muted" style="font-size: 30px;font-weight: 500;">
+        Recent events
+        </p>
       </div>
+      {% if events %}
+      <div class="row ">
+       {% for event in events %}
+        <!-- Event Card 1 -->
+        <div class="col-md-3 event-card" style="cursor: pointer;">
+          <div class="card">
+            <div class="card-body text-center align-items-center">
+              <h3 class="text-center">Event </h3>
+              <p class="card-text text-center">{{ event.agenda }}</p>
+              <p class="card-text text-center">{{ event.startDate}} - {{ event.endDate }}</p>
+              <a href="#" class="btn btn-primary">View More</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+  
+      {% else %}
+      <div class="row  justify-content-center  mt-3 mb-2">
+      <p class="text-muted" style="font-size:25px; font-weight: 500;">Events Comming soon....</p>
+      </div>
+      {% endif %}
+
     </div>
     <!-- Footer -->
     <footer class="bg-dark text-white  py-4" >
-      <div class="container">
+      <div class="container" style="height: 10vh;">
         <div class="row">
           <div class="col-md-6">
             <p>
@@ -134,4 +122,36 @@
         </div>
       </div>
     </footer>
+        
+    {% if messages %}
+   
+    <script>
+      var messages = [];
+    </script>
+    {% for message in messages %}
+    <script>
+      messages.push({
+        "message": "{{ message.message }}",
+        "tag": "{{ message.tags }}"
+      });
+    </script>
+    {% endfor %}
+  {% endif %}
+
+
+
+<script>
+  $(function(){
+    messages.forEach(function(message) {
+      if (message.tag === "success") {
+        toastr.success(message.message);
+      } else if (message.tag=== "error") {
+        toastr.error(message.message); 
+      } else {
+        
+        toastr.info(message.message);
+      }
+    });
+  });
+</script>
 {% endblock %}

@@ -16,7 +16,7 @@ class TokenAuthMiddleware:
             ]
 
         if request.path in disallowed_urls:
-            print("Allowed ")
+            print("Accessing token ..path....")
             if 'token' in request.session:
                 return self.get_response(request)
             else:
@@ -24,7 +24,7 @@ class TokenAuthMiddleware:
                 return redirect(reverse('login'))
 
         else:
-            print("ALLOWED ")
+            print("Allowed....path ")
             return self.get_response(request)
            
 

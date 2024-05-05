@@ -9,7 +9,7 @@ from api.api import ApiService
 # api instancee
 api =ApiService()
 
-ADMIN='admin'
+ADMIN='Admin'
 MEMBER='Member'
 
 #loging function 
@@ -56,15 +56,12 @@ def loginPage(request):
                if data['role']==MEMBER:
                    print('Your the MEMBER')
                    request.session['token'] = data['access_token']
-                   if 'token' in request.session:
-                       print('picking token')
-                       print(request.session['token'])
-                   else:   
-                       print("Notthing")
-                       return render(request,'dashboard.html')
+                   return redirect('memberDashboard',token=data['access_token'])
+               
                elif data['role']==ADMIN:
                    print('Your the ADMIN')
-                   return render(request,'login.html',)
+                   request.session['token'] = data['access_token']
+                   return redirect('adminDashbaord')
 
         else:
             print("Something went wrong")
@@ -186,3 +183,8 @@ def completeProfile(request,account_id):
 def is_valid_email(email):
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return re.match(email_regex, email)
+
+def logout(request):
+    request.session.clear()
+    messages.success(request,'Successfully logged out!')
+    return redirect('/')
