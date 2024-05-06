@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from api.api import ApiService
 from utils.enum import Status
@@ -7,7 +7,6 @@ import json
 
 #Api instance 
 api =ApiService()
-
 
 def adminDashboard(request):
     query_users = '''
@@ -24,24 +23,46 @@ def adminDashboard(request):
       }
     }
     '''
+    queryP ='''
+      query {
+        getStaffProfile {
+           fname
+           id
+         }
+       }
+      '''
 
+    token = request.session.get('token')
+    # print("retrieved token:",token)
+    
+    profile_respone=api.performQueryWithToken(queryP,api.getCsrfToken(request),token)
 
-    # Make requests to GraphQL server
-    response_users = api.performQuery(query_users,api.getCsrfToken(request))
-    response_events = api.performQuery(query_events,api.getCsrfToken(request))
+    if 'errors' in profile_respone:
+        print(profile_respone['errors'])
+        messages.error(request,profile_respone['errors'][0]['message'])
+        # if profile_respone['errors'][0]['statusCode']==404:
+        #    print(profile_respone)
+        # else:
+            #perm logic to retreve id and redirect user to complete profile page
+            # print(profile_respone['data']['getStaffProfile']['id'])
+        
+        request.session.clear()
+        return redirect('login')
+    else:
+        messages.success(request,'Successfully loggedin!')
+        print("profile:",profile_respone)
+        response_users = api.performQuery(query_users,api.getCsrfToken(request))
+        response_events = api.performQuery(query_events,api.getCsrfToken(request))
+        total_users = len(response_users['data']['findAllUsers'])
+        total_events = len(response_events['data']['findAllEvents'])
 
-    # Parse GraphQL responses
-    total_users = len(response_users['data']['findAllUsers'])
-    total_events = len(response_events['data']['findAllEvents'])
-
-    # Pass data to the template
-    context = {
+       # Pass data to the template
+        context = {
         'total_users': total_users,
         'total_events': total_events,
-    }
-    print(context)
-    return render(request, 'dashboard.html', context)
-
+        'profile':profile_respone['data']['getStaffProfile'],
+        }
+        return render(request, 'dashboard.html', context)
 
 
 def getMembers(request):

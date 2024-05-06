@@ -52,15 +52,15 @@ def loginPage(request):
            print('Auth Results:',data)
            if data and 'access_token' in data:
                print(data['access_token'])
-               messages.success(request,data['message'])
                if data['role']==MEMBER:
                    print('Your the MEMBER')
                    request.session['token'] = data['access_token']
-                   return redirect('memberDashboard',token=data['access_token'])
+                   return redirect('memberDashboard')
                
                elif data['role']==ADMIN:
                    print('Your the ADMIN')
                    request.session['token'] = data['access_token']
+                #    messages.success(request,'Successfullly loggedin')
                    return redirect('adminDashbaord')
 
         else:

@@ -10,7 +10,7 @@ class TokenAuthMiddleware:
 
     def __call__(self, request):
         disallowed_urls = [
-            '/adminDashbaord','/editEvent',
+            '/admindashboard','/editEvent',
             '/events','/addEvent','/members',
             '/addmember'
             ]
@@ -20,11 +20,12 @@ class TokenAuthMiddleware:
             if 'token' in request.session:
                 return self.get_response(request)
             else:
-                print("No token")
+                print("No token availale ")
+                messages.error(request,'Session expired Please loggin!')
                 return redirect(reverse('login'))
 
         else:
-            print("Allowed....path ")
+            print("Allowed....path ",request.path)
             return self.get_response(request)
            
 

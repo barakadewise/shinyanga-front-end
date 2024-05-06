@@ -4,7 +4,7 @@ from api.api import ApiService
 
 api = ApiService()
 #member dashboard
-def memberDashboard(request,token):
+def memberDashboard(request):
     #get user profile data
     query ='''
         query {
@@ -15,15 +15,19 @@ def memberDashboard(request,token):
   }
 }
     '''
+    token=request.session.get('token')
+    print(token)
     response = api.performQueryWithToken(query,api.getCsrfToken(request),token)
     if 'errors' in response:
         print(response['errors'])
         messages.error(request,response['errors'][0]['message'])
-        return redirect('signup')
+        print(response)
+        request.session.clear()
+        return redirect('login')
     else:
         messages.success(request,'Successfully loggedin!')
-        
-    return render(request,'member-dash.html',)
+        print("profile:",response)
+        return render(request,'member-dash.html',{'profile':response['data']['getUserProfile']})
 
 
 #view events
