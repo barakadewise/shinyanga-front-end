@@ -37,7 +37,7 @@ def getEvents(request):
         print(events)
         return render(request, 'events.html', {'events': events})
     else:
-        messages.error(request,'Failed to fetch events')
+        
         print(response)
         return render(request, 'events.htm')
 

@@ -40,16 +40,10 @@ def adminDashboard(request):
     if 'errors' in profile_respone:
         print(profile_respone['errors'])
         messages.error(request,profile_respone['errors'][0]['message'])
-        # if profile_respone['errors'][0]['statusCode']==404:
-        #    print(profile_respone)
-        # else:
-            #perm logic to retreve id and redirect user to complete profile page
-            # print(profile_respone['data']['getStaffProfile']['id'])
-        
         request.session.clear()
         return redirect('login')
     else:
-        messages.success(request,'Successfully loggedin!')
+        # messages.success(request,'Successfully loggedin!')
         print("profile:",profile_respone)
         response_users = api.performQuery(query_users,api.getCsrfToken(request))
         response_events = api.performQuery(query_events,api.getCsrfToken(request))
@@ -86,6 +80,7 @@ def getMembers(request):
   print(response_users)
   users = response_users['data']['findAllUsers']
 
+
   context = {
         'users': users,
     }
@@ -101,7 +96,7 @@ def addMember(request):
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         region = request.POST.get('Region')
-        district = request.POST.get('district')
+        profession= request.POST.get('district')
         ward = request.POST.get('Ward')
         role = request.POST.get('role')
         status = request.POST.get('status')
@@ -109,8 +104,8 @@ def addMember(request):
         # Account creation mutation
         accountMutation = '''
           mutation($email: String!, $password: String!, $role: String!) {
-            createAccount(
-              createAccountInput: { email: $email, password: $password, role: $role }
+            createStaffOrMemberAccount(
+              createStaffOrMemberInput: { email: $email, password: $password, role: $role }
             ) {
               id
               email
@@ -138,8 +133,8 @@ def addMember(request):
                        
 
                     # If there are no errors, continue with member creation
-                    if 'data' in account_response and 'createAccount' in account_response['data']:
-                        account_id = account_response['data']['createAccount']['id']
+                    if 'data' in account_response and 'createStaffOrMemberAccount' in account_response['data']:
+                        account_id = account_response['data']['createStaffOrMemberAccount']['id']
 
                         # Member creation mutation
                         memberMutation = '''
@@ -166,17 +161,23 @@ def addMember(request):
                             "phone": phone,
                             "accountId": account_id
                         }
-                        print(memberVariables)
-                        # Perform member creation mutation
-                        member_response = api.performMuttion(memberMutation, memberVariables)
-                        if member_response:
-                            print("Member created successfully.")
-                            messages.success(request,"Member created successfully.")
-                         
+                        
+                        if account_response['data']['createStaffOrMemberAccount']['role']=='Member':
+                            member_response = api.performMuttion(memberMutation, memberVariables)
+                            if 'data' in member_response:
+                                print('Member created successfuly',member_response)
+                                messages.success(request,"Member created successfully.")
+                            elif 'errors' in member_response: 
+                                print("Error creating member.",member_response)
+                                messages.error(request,"Error creating member") 
+                    
+                            else:
+                                messages.error(request,'Something went wrong!')
                         else:
-                            print("Error creating member.")
-                            messages.error(request,"Error creating member")
-                         
+                            
+                            print('CReate otherrrr..')        
+                            
+            
                 except Exception as e:
                     print("An error occurred:")
                     messages.error(request,"An error occurred:", str(e))

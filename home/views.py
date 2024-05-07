@@ -5,8 +5,8 @@ from api.api import ApiService
 # Create your views here.
 api =ApiService()
 def homePage(request):
-    #peform query for events
-    context ={'events':[]}
+    context = {'events': []}
+    
     query = '''
         query {
           findAllEvents {
@@ -18,15 +18,14 @@ def homePage(request):
           }
         }
     '''
-    response = api.performQuery(query,api.getCsrfToken(request))
     
-    for event in response['data']['findAllEvents']:
-        if len(context['events'])<=4:
-            context['events'].append(event)
+    response = api.performQuery(query, api.getCsrfToken(request))
+        
+    if 'data' in response and 'findAllEvents' in response['data']:
+        events = response['data']['findAllEvents']
             
-
-        else:
-            break
-
-    print(context)
-    return render(request,'index.html',context)
+        context['events'] = events[:4]
+    else:
+        context['error'] = 'Failed to fetch events data.'
+    
+    return render(request, 'index.html', context)

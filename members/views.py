@@ -25,15 +25,57 @@ def memberDashboard(request):
         request.session.clear()
         return redirect('login')
     else:
-        messages.success(request,'Successfully loggedin!')
+        # messages.success(request,'Successfully loggedin!')
         print("profile:",response)
         return render(request,'member-dash.html',{'profile':response['data']['getUserProfile']})
 
 
 #view events
 def viewEvents(request):
-    return render(request,'view_events.html')
+    query = '''
+        query {
+          findAllEvents {
+            id
+            agenda
+            coverage
+            startDate
+            endDate
+          }
+        }
+    '''
+    # Make the GraphQL request
+    response = api.performQuery(query,api.getCsrfToken(request))
+    if 'errors' in response:
+        print(response,"Eroors")
+        messages.error(request,'Something went wrong')
+    if 'data' in response:
+        events = response.get('data', {}).get('findAllEvents', [])
+        print(events)
+        return render(request, 'view_events.html', {'events': events})
+    else:
+        print(response)
+        messages.error(request,'Something went wrong')
 
 #view members
 def viewMember(request):
-    return render(request,'view_member.html')
+ query_users = '''
+    query {
+      findAllUsers {
+        id
+        name
+        phone
+        email
+        region
+        ward
+        status
+        profession
+      }
+    }
+    '''
+ response_users = api.performQuery(query_users,api.getCsrfToken(request))
+ print(response_users)
+ users = response_users['data']['findAllUsers']
+ context = {
+        'users': users,
+    }
+ return render(request,'view_member.html',context)
