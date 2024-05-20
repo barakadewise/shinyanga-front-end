@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+
 from django.http import JsonResponse
 from django.contrib import messages
 
@@ -80,14 +80,16 @@ def addEvent(request):
         if 'errors' in response:
             print("response has got errors:",response)
             if response['errors'][0]['statusCode']==401:
-                messages.error(request,'Please login to proceed!')
-
+                messages.error(request,'Failed to add event!')
+              
             else:
                messages.error(request,response['errors'][0]['message'])
             
         elif 'data' in response:
             print("response data",response)
             messages.success(request,'Successfully added Event')
+            return redirect('events')
+
         else:
             messages.error(request,'Failed due to Network issues')
     return render(request, 'addEvent.html')

@@ -235,31 +235,7 @@ href="{% static 'plugins/daterangepicker/daterangepicker.css' %}"
                         Submit
                       </button>
                     </div>
-                    <div class="row justify-content-end">
-                      {% if messages %}
-                      <div class="alert-container col-4 mt-2 mr-2">
-                          {% for message in messages %}
-                              {% if message.tags == "error" %}
-                                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                      {{ message }}
-                                  </div>
-                              {% else %}
-                                  <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
-                                      {{ message }}
-                                  </div>
-                              {% endif %}
-                              <script>
-                              
-                                  setTimeout(function() {
-                                      document.querySelector('.alert').classList.remove('show');
-                                      document.querySelector('.alert').classList.add('hide');
-                                  }, 5000);
-                              </script>
-                          {% endfor %}
-                      </div>
-                      {% endif %}
-                      
-                    </div>
+                    
                   </form>
 
                 </div>
@@ -425,9 +401,6 @@ href="{% static 'plugins/daterangepicker/daterangepicker.css' %}"
         document.querySelector("#total-progress").style.opacity = "0"
       })
     
-      // Setup the buttons for all transfers
-      // The "add files" button doesn't need to be setup because the config
-      // `clickable` has already been specified.
       document.querySelector("#actions .start").onclick = function() {
         myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
       }
@@ -436,4 +409,35 @@ href="{% static 'plugins/daterangepicker/daterangepicker.css' %}"
       }
       // DropzoneJS Demo Code End
     </script>
+         {% if messages %}
+   
+         <script>
+           var messages = [];
+         </script>
+         {% for message in messages %}
+         <script>
+           messages.push({
+             "message": "{{ message.message }}",
+             "tag": "{{ message.tags }}"
+           });
+         </script>
+         {% endfor %}
+       {% endif %}
+ 
+   
+ 
+     <script>
+       $(function(){
+         messages.forEach(function(message) {
+           if (message.tag === "success") {
+             toastr.success(message.message);
+           } else if (message.tag=== "error") {
+             toastr.error(message.message); 
+           } else {
+             
+             toastr.info(message.message);
+           }
+         });
+       });
+     </script>
 {% endblock %}

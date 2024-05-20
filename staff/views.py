@@ -44,7 +44,7 @@ def adminDashboard(request):
         return redirect('login')
     else:
         # messages.success(request,'Successfully loggedin!')
-        print("profile:",profile_respone)
+        print("profile:",profile_respone['data']['getStaffProfile'])
         response_users = api.performQuery(query_users,api.getCsrfToken(request))
         response_events = api.performQuery(query_events,api.getCsrfToken(request))
         total_users = len(response_users['data']['findAllUsers'])
@@ -54,7 +54,7 @@ def adminDashboard(request):
         context = {
         'total_users': total_users,
         'total_events': total_events,
-        'profile':profile_respone['data']['getStaffProfile'],
+        'profile':profile_respone['data']['getStaffProfile']['fname'],
         }
         return render(request, 'dashboard.html', context)
 
