@@ -1,9 +1,6 @@
 from django.shortcuts import render,redirect
 import re
 from django.contrib import messages
-from django.http import JsonResponse
-from django.contrib import sessions
-
 from api.api import ApiService
 
 # api instancee

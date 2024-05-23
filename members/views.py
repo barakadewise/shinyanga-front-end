@@ -5,15 +5,13 @@ from api.api import ApiService
 api = ApiService()
 #member dashboard
 def memberDashboard(request):
-    #get user profile data
+  
     query ='''
         query {
-  getUserProfile {
-    region
-    name
-    id
-  }
-}
+        getUserProfile {
+        name
+        }
+       }
     '''
     token=request.session.get('token')
     print(token)
@@ -25,9 +23,8 @@ def memberDashboard(request):
         request.session.clear()
         return redirect('login')
     else:
-        # messages.success(request,'Successfully loggedin!')
         print("profile:",response)
-        return render(request,'member-dash.html',{'profile':response['data']['getUserProfile']})
+        return render(request,'member-dash.html')
 
 
 #view events
@@ -49,9 +46,7 @@ def viewEvents(request):
         print(response,"Eroors")
         messages.error(request,'Something went wrong')
     if 'data' in response:
-        events = response.get('data', {}).get('findAllEvents', [])
-        print(events)
-        return render(request, 'view_events.html', {'events': events})
+        return render(request, 'view_events.html', {'events': response.get('data', {}).get('findAllEvents', [])})
     else:
         print(response)
         messages.error(request,'Something went wrong')
@@ -79,3 +74,25 @@ def viewMember(request):
         'users': users,
     }
  return render(request,'view_member.html',context)
+
+
+#get user profile name 
+def getUserName(request):
+    query ='''
+        query {
+        getUserProfile {
+        name
+        }
+       }
+    '''
+    token=request.session.get('token')
+    response = api.performQueryWithToken(query,api.getCsrfToken(request),token)
+    if 'errors' in response:
+        print(response['errors'])
+        messages.error(request,response['errors'][0]['message'])
+        print(response)
+        request.session.clear()
+        return redirect('login')
+    else:
+        print("profile:",response)
+        return {'profile':response['data']['getUserProfile']}

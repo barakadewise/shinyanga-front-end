@@ -6,7 +6,6 @@ from django.contrib import messages
 from api.api import ApiService
 
 # Create your views here.
-#api isinstance
 api =ApiService()
 
 

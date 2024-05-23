@@ -93,7 +93,7 @@
               <h3 class="text-center">Event </h3>
               <p class="card-text text-center">{{ event.agenda }}</p>
               <p class="card-text text-center">{{ event.startDate}} - {{ event.endDate }}</p>
-              <a href="#" class="btn btn-primary">View More</a>
+              <a href="{% url 'viewEvent' %}" class="btn btn-primary">View More</a>
             </div>
           </div>
         </div>

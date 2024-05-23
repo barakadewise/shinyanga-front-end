@@ -1,5 +1,5 @@
-from django.shortcuts import render
-
+from django.shortcuts import render,redirect
+from django.contrib import messages
 from api.api import ApiService
 
 # Create your views here.
@@ -29,3 +29,14 @@ def homePage(request):
         context['error'] = 'Failed to fetch events data.'
     
     return render(request, 'index.html', context)
+
+
+def viewEventCard(request):
+    if 'token' in request.session:
+        print("Your allowed to vie this events..")
+        messages.success(request,'Allowed to view!')
+        return redirect('viewEvents')
+    else:
+        messages.error(request,'Please Login in to view events')
+        print("Please loggin in to view events!")  
+        return redirect('homepage')  
