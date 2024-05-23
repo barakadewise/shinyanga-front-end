@@ -52,12 +52,14 @@ def loginPage(request):
                if data['role']==MEMBER:
                    print('Your the MEMBER')
                    request.session['token'] = data['access_token']
+                   request.session['role']=MEMBER
                    messages.success(request,'Successfullly loggedin')
                    return redirect('memberDashboard')
                
                elif data['role']==ADMIN:
                    print('Your the ADMIN')
                    request.session['token'] = data['access_token']
+                   request.session['role']=ADMIN
                    messages.success(request,'Successfullly loggedin')
                    return redirect('adminDashbaord')
 
