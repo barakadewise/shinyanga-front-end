@@ -2,12 +2,11 @@ from django.shortcuts import render,redirect
 import re
 from django.contrib import messages
 from api.api import ApiService
+from utils.enum import Roles
 
-# api instancee
+#instancees
 api =ApiService()
-
-ADMIN='Admin'
-MEMBER='Member'
+role =Roles
 
 #loging function 
 def loginPage(request):
@@ -49,17 +48,17 @@ def loginPage(request):
            print('Auth Results:',data)
            if data and 'access_token' in data:
                print(data['access_token'])
-               if data['role']==MEMBER:
+               if data['role']==role.MEMBER.value:
                    print('Your the MEMBER')
                    request.session['token'] = data['access_token']
-                   request.session['role']=MEMBER
+                   request.session['role']=role.MEMBER.value
                    messages.success(request,'Successfullly loggedin')
                    return redirect('memberDashboard')
                
-               elif data['role']==ADMIN:
+               elif data['role']==role.ADMIN.value:
                    print('Your the ADMIN')
                    request.session['token'] = data['access_token']
-                   request.session['role']=ADMIN
+                   request.session['role']=role.ADMIN.value
                    messages.success(request,'Successfullly loggedin')
                    return redirect('adminDashbaord')
 

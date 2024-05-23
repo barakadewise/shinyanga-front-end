@@ -36,8 +36,6 @@ def getEvents(request):
         print(events)
         return render(request, 'events.html', {'events': events})
     else:
-        
-        print(response)
         return render(request, 'events.htm')
 
 
