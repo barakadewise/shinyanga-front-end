@@ -10,17 +10,17 @@
     }
 </style>
 
-   <div class="container-fluid" style="height: 96vh;">
-    <div class="row justify-content-center" style="margin-top: 50px;">
-        <div class="col-sm-4 mt-4">
-            <div class="register-logo">
-              <a href=""><b>Shinyanga</b>CP</a>
-            </div>
-      
+ 
+    <div class="row justify-content-center" style="margin-top: 4rem;height: 80vh;">
+        <div class="col-sm-4"style="justify-content: center; display:flex; flex-direction: column;">
+          
             <div class="card">
               <div class="card-body register-card-body">
-                <h4 class="login-box-msg"><b>Register new Membership</b></h4>
-      
+                <h4 class="login-box-msg"><b>Shinyanga Platform</b></h4>
+                <div class="text-center mb-2">
+                  <img src="{% static 'dist/img/logo.png' %}" alt="logo">
+                </div>
+                <h4 class="login-box-msg"><b>Membership Register</b></h4>
                 <form method="POST" role="form" action="{% url 'signup' %}">
                     {% csrf_token %}
                   <div class="input-group mb-3">
@@ -72,7 +72,7 @@
       
                   <!-- /.col -->
                   <div class="row justify-content-between mt-2 mr-2">
-                    <p class="text-primary cursor-pointer">
+                    <p class="text-info cursor-pointer">
                       Have account? <a href="{% url 'login' %}">Login</a>
                     </p>
                   </div>
@@ -101,7 +101,7 @@
         {% endfor %}
       {% endif %}
 
-   </div>
+   
 
     <script>
       $(function(){
