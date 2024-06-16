@@ -10,7 +10,6 @@ api =ApiService()
 
 
 def getEvents(request):
-    # Define your GraphQL query
     query = '''
         query {
           findAllEvents {
@@ -25,12 +24,46 @@ def getEvents(request):
     
  
     
-    # Make the GraphQL request
-    response = api.performQuery(query,api.getCsrfToken(request))
+   #check if edit post is sent 
+    if request.method=='POST':
+        id =float(request.POST.get('id'))
+        agenda=request.POST.get('agenda')
+        coverage=request.POST.get('coverage')
+        startDate =request.POST.get('startDate')
+        endDate =request.POST.get('endDate')
 
+        mutation = '''
+           mutation UpdateEvent($input: UpdateEventInput!, $eventId: Float!) {
+           updateEvent(updateEventInput: $input, eventId: $eventId) {
+            message
+             statusCode
+            }
+           }
+
+        '''
+        variables = {
+            'input': {
+                'agenda': agenda,
+                'coverage': coverage,
+                'startDate': startDate,
+                'endDate': endDate
+            }
+            ,
+            'eventId':id
+        }
+       
+        eventEdit = api.performMuttion(mutation,variables)
+        if 'errors' in eventEdit:
+            print(eventEdit['errors'])
+            messages.error(request,eventEdit['error'][0])
+        else:
+            messages.success(request,"Updated Successfully!")    
+
+     # pull data 
+    response = api.performQuery(query,api.getCsrfToken(request))
     if 'errors' in response:
         print(response,"Eroors")
-        return response
+        return render(request, 'events.htm')
     if 'data' in response:
         events = response.get('data', {}).get('findAllEvents', [])
         print(events)
@@ -92,5 +125,42 @@ def addEvent(request):
     return render(request, 'addEvent.html')
 
 
-def editEvent(request):
-    return render(request,'editEvent.html')
+# def editEvent(request):
+#     if request.method=="POST":
+#         print("Request to edit event made!")
+#         messages.info(request,'Edit eent started')
+       
+def delete_event(request):
+    if request.method=="POST":
+      
+        id =float(request.POST.get('id'))
+        print(id)
+        muatation='''
+        mutation($id: Float!) {
+            removeEvent(id:$id){
+             message,
+             statusCode
+           }
+         }
+  
+        '''
+        response = api.performMuttion(muatation,{'id':id} )
+        if 'errors' in response:
+            messages.error(request,'Failed to delete User!')
+            print(response['errors'])
+            return JsonResponse({'status': 'error'},status=400)
+          
+            
+        else:
+            messages.success(request,response['data'][' removeEvent']['message'])
+            return redirect('events')
+            # return JsonResponse({'status': 'success'},status=200)
+      
+def updateEvent(request):
+        if  request.method =="POST":
+            agenda=request.POST.get('agenda')
+            coverage=request.POST.get('coverage')
+            startDate =request.POST.get('startDate')
+            endDate =request.POST.get('endDate')
+
+            print(agenda,startDate,endDate,coverage)

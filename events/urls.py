@@ -4,9 +4,8 @@ from .import views
 
 urlpatterns = [
    path('events',views.getEvents,name='events'),
-   path('editEvent',views.editEvent,name="editEvent"),
-   path('addEvent',views.addEvent,name="addEvent")
+   path('addEvent',views.addEvent,name="addEvent"),
+   path('deleteEvent',views.delete_event,name="deleteEvent"),
+   path('updateEvent',views.updateEvent,name='updateEvent')
    
 ]
-
-

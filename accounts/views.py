@@ -184,6 +184,6 @@ def is_valid_email(email):
     return re.match(email_regex, email)
 
 def logout(request):
-    request.session.clear()
+    del request.session['token']
     messages.success(request,'Successfully logged out!')
     return redirect('/')

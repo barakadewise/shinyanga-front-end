@@ -229,29 +229,8 @@
           autoWidth: false,
           responsive: true,
         });
-        $(".delete-btn").click(function () {
-          // Get the data from the row (you might need to adjust this based on your DataTable setup)
-          var rowData = $("#example1")
-            .DataTable()
-            .row($(this).closest("tr"))
-            .data();
-          var eventId = rowData[0]; // Assuming the first column contains the event ID
-
-          // Set the event ID in the modal for reference when confirming delete
-          $("#confirmDelete").data("event-id", eventId);
-        });
-
-        // Handle confirm delete button click
-        $("#confirmDelete").click(function () {
-          // Retrieve the event ID from the modal
-          var eventId = $(this).data("event-id");
-
-          // Perform your delete action here (you may want to make an AJAX request to the server)
-          console.log("Deleting event with ID: " + eventId);
-
-          // Close the modal
-          $("#deleteModal").modal("hide");
-        });
+       
+       
       });
     </script>
 

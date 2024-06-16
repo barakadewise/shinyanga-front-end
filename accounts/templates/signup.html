@@ -9,8 +9,6 @@
         
     }
 </style>
-
- 
     <div class="row justify-content-center" style="margin-top: 4rem;height: 80vh;">
         <div class="col-sm-4"style="justify-content: center; display:flex; flex-direction: column;">
           
@@ -54,7 +52,6 @@
                       name="password2"
                       required
                       minlength="5",
-                      
                     />
                     <div class="input-group-append">
                       <div class="input-group-text">
@@ -101,8 +98,6 @@
         {% endfor %}
       {% endif %}
 
-   
-
     <script>
       $(function(){
         messages.forEach(function(message) {
@@ -111,7 +106,6 @@
           } else if (message.tag=== "error") {
             toastr.error(message.message); 
           } else {
-            
             toastr.info(message.message);
           }
         });

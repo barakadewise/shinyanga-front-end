@@ -172,10 +172,7 @@ def addMember(request):
                                 messages.error(request,"Error creating member") 
                     
                             else:
-                                messages.error(request,'Something went wrong!')
-                        else:
-                            
-                            print('CReate otherrrr..')        
+                                messages.error(request,'Something went wrong!')       
                             
             
                 except Exception as e:
@@ -193,5 +190,7 @@ def addMember(request):
     return render(request, 'add_member.html')
 
 
-def getTestpage(request):
-    return render(request,'test.html')
+
+
+def editEvent(request):
+    pass
