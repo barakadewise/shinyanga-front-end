@@ -148,13 +148,13 @@ def delete_event(request):
         if 'errors' in response:
             messages.error(request,'Failed to delete User!')
             print(response['errors'])
-            return JsonResponse({'status': 'error'},status=400)
+            return redirect('events')
           
-            
         else:
             messages.success(request,response['data'][' removeEvent']['message'])
             return redirect('events')
-            # return JsonResponse({'status': 'success'},status=200)
+        
+        
       
 def updateEvent(request):
         if  request.method =="POST":

@@ -76,6 +76,7 @@ def viewMember(request):
  return render(request,'view_member.html',context)
 
 
+
 #get user profile name 
 def getUserName(request):
     query ='''
@@ -96,3 +97,6 @@ def getUserName(request):
     else:
         print("profile:",response)
         return {'profile':response['data']['getUserProfile']}
+    
+
+

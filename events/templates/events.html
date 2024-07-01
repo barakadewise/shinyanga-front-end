@@ -226,20 +226,23 @@
 {% endfor %}
 {% endif %}
 
-<script>
-$(function(){
-messages.forEach(function(message) {
-  if (message.tag === "success") {
-    toastr.success(message.message);
-  } else if (message.tag=== "error") {
-    toastr.error(message.message); 
-  } else {
-    toastr.info(message.message);
-  }
-});
-});
+
 </script>
 <script>
+    
+    $(function () {
+      $("#example1").DataTable({
+        responsive: true,
+        autoWidth: false,
+      });
+      $("#example2").DataTable({
+        paging: true,
+        lengthChange: false,
+        searching: false,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true,})})
 
    $(".edit-btn").click(function () {
             
@@ -265,7 +268,6 @@ messages.forEach(function(message) {
       var eventeId=$(this).data('id')
       var eventAgenda =$(this).data('agenda')
        
-    
       $("#deleteEvent").val(eventAgenda)
       $("#confirmDelete").data("id", eventeId);});
     
@@ -296,21 +298,20 @@ messages.forEach(function(message) {
       });
       // Handle edit button click
     
-    $(function () {
-      $("#example1").DataTable({
-        responsive: true,
-        autoWidth: false,
-      });
-      $("#example2").DataTable({
-        paging: true,
-        lengthChange: false,
-        searching: false,
-        ordering: true,
-        info: true,
-        autoWidth: false,
-        responsive: true,})})
-   
    </script>
+   <script>
+    $(function(){
+    messages.forEach(function(message) {
+      if (message.tag === "success") {
+        toastr.success(message.message);
+      } else if (message.tag=== "error") {
+        toastr.error(message.message); 
+      } else {
+        toastr.info(message.message);
+      }
+    });
+    });
+    </script>
   
 
 {% endblock %}

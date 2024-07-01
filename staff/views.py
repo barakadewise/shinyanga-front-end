@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from api.api import ApiService
-from utils.enum import Status
+
 from django.contrib import messages
-import json
+
 
 #Api instance 
 api =ApiService()
@@ -191,6 +191,76 @@ def addMember(request):
 
 
 
+def editMember(request):
+    if request.method == 'POST':
+        userId = request.POST.get('id')
+        name = request.POST.get('editName')
+        phone = request.POST.get('editPhone')
+        profession = request.POST.get('editProfession')
+        ward = request.POST.get('editWard')
+        region = request.POST.get('editRegion')
+        status = request.POST.get('editStatus')
 
-def editEvent(request):
-    pass
+        print(userId,name,phone,profession,ward)
+        mutation = """
+        mutation UpdateUser($input: UpdateUserInput!,$userId:Float!) {
+          updateUser(updateUserInput: $input,userId:$userId) {
+            statusCode
+            message
+          }
+        }
+        """
+
+        
+        variables = {
+            'input': {
+                'name': name,
+                'phone': phone,
+                'profession': profession,
+                'ward': ward,
+                'region': region,
+                'status': status,
+            },
+             'userId': int(userId),
+        }
+
+        try:
+            
+            response = api.performMuttion(mutation,variables)
+            if 'errors' in response:
+                print(response['errors'])
+                messages.error(request,"Faiiled to Update Member.")
+                return JsonResponse({status:400})
+            
+            messages.success(request,"Successfully Updated Member.")
+            return JsonResponse({status:200})
+        
+        except Exception as e:
+            print("Unkonwn exception occured:",e)
+            return redirect('members')
+           
+           
+
+def deleteMember(request):
+    mutation ='''
+      mutation ($id:Float!){
+      removeUser(id: $id) {
+       message
+       statusCode
+      }
+     }
+
+    '''
+    if request.method =="POST":
+        id =request.POST.get('id')
+
+
+        response=api.performMuttion(mutation,{"id":int(id)})
+
+        if 'errors' in response:
+            messages.error(request,"Failed to delete Member")
+            return JsonResponse()
+        
+        messages.success(request,"Successfully deleted")
+        return JsonResponse()
+
