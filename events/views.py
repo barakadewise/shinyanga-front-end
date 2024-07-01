@@ -59,7 +59,7 @@ def getEvents(request):
         else:
             messages.success(request,"Updated Successfully!")    
 
-     # pull data 
+     # pull data  from the api 
     response = api.performQuery(query,api.getCsrfToken(request))
     if 'errors' in response:
         print(response,"Eroors")
