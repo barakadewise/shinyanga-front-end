@@ -167,6 +167,7 @@ def addMember(request):
                             if 'data' in member_response:
                                 print('Member created successfuly',member_response)
                                 messages.success(request,"Member created successfully.")
+                                return redirect('members')
                             elif 'errors' in member_response: 
                                 print("Error creating member.",member_response)
                                 messages.error(request,"Error creating member") 

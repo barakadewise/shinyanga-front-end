@@ -3,6 +3,7 @@
 {% load static %}
 <title>{% block title %} Event | Panel {% endblock %}</title>
 
+
 {% block content %}
 <div class="wrapper">
     <!-- Navbar -->
@@ -69,7 +70,7 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -79,7 +80,7 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- /.card-header -->
+                     
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
@@ -125,13 +126,68 @@
                                 <tfoot></tfoot>
                             </table>
                         </div>
-                        <!-- /.card-body -->
+                      
+                       
                     </div>
-                    <!-- /.card -->
+                  
                 </div>
-                <!-- /.col -->
-            </div>
+               
+            </div> -->
             <!-- /.row -->
+            <div class="row mx-2">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title text-center text-muted py-2" style="font-weight: 400; font-size: 25px;">Events Schedule</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                {% for event in events %}
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="calendar-icon bg-primary text-white">
+                                                    <i class="bi bi-calendar3"></i>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <h5 class="card-title mb-0 text-info" style="font-weight: 400; font-size: 28px;">Title: {{ event.agenda }}</h5>
+                                                   
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <p class="card-text" style="font-weight: 400; font-size: 17px;">Start Date: {{ event.startDate }}</p>
+                                            <p class="card-text"  style="font-weight: 400; font-size: 17px;">End Date: {{ event.endDate }}</p>
+                                            <h3 class="text-center"  style="font-weight: 500; font-size: 20px;">{{ event.coverage}}</h3>
+                                        </div>
+                                        <div class="card-footer text-center">
+                                            <a href="#" class="btn btn-info btn-sm edit-btn" 
+                                            data-toggle="modal"
+                                             data-target="#editModal"
+                                             data-id="{{ event.id }}"
+                                              data-agenda="{{ event.agenda }}"
+                                              data-coverage="{{ event.coverage }}"
+                                               data-startdate="{{ event.startDate }}"
+                                               data-enddate="{{ event.endDate }}">
+                                                <i class="fas fa-pen"></i> Edit
+                                            </a>
+                                            <a href="#" class="btn btn-light btn-sm delete-btn text-white"
+                                            style="background-color: rgb(242, 139, 139);" 
+                                            data-toggle="modal" 
+                                            data-id="{{ event.id }}"
+                                            data-agenda="{{ event.agenda }}"
+                                            data-target="#deleteModal">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
         <!-- /.content -->
     </div>
