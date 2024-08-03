@@ -169,17 +169,13 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                       <div class="form-group">
                         <label>Profession</label>
-                        <select
-                          class="form-control select2bs4"
-                          style="width: 100%",
-                          name="district"
-                        >
-                          <option selected="selected">Shinyanga</option>
-                          <option>Tabora</option>
-                          <option>Arusha</option>
-                          <option>Tanga</option>
-                          <option>Mbeya</option>
-                          <option>Kagera</option>
+                       
+                        <select class="form-control select2bs4" style="width: 100%" name="profession">
+                          <option selected="selected">Choose Profession</option>
+                          <option>Entrepreneur</option>
+                          <option>Intellectual</option>
+                          <option>Larger scale farmer</option>
+                          <option>Small scale farmer</option>
                         </select>
                       </div>
                     </div>
@@ -190,48 +186,43 @@
                           class="form-control select2bs4"
                           style="width: 100%"
                           name="Ward"
+                          required
                         >
-                          <option selected="selected">Shinyanga</option>
-                          <option>Tabora</option>
-                          <option>Arusha</option>
-                          <option>Tanga</option>
-                          <option>Mbeya</option>
-                          <option>Kagera</option>
+                          <option value="" selected="selected" disabled>Choose ward</option>
+                          <option value="Chamaguha">Chamaguha</option>
+                          <option value="Chibe">Chibe</option>
+                          <option value="Ibadakuli">Ibadakuli</option>
+                          <option value="Ibinzamata">Ibinzamata</option>
+                          <option value="Kambarage">Kambarage</option>
+                          <option value="Kitangili">Kitangili</option>
+                          <option value="Kizumbi">Kizumbi</option>
+                          <option value="Kolandoto">Kolandoto</option>
+                          <option value="Lubaga">Lubaga</option>
+                          <option value="Masekelo">Masekelo</option>
+                          <option value="Mjini">Mjini</option>
+                          <option value="Mwamalili">Mwamalili</option>
+                          <option value="Mwawaza">Mwawaza</option>
+                          <option value="Ndala">Ndala</option>
+                          <option value="Ndembezi">Ndembezi</option>
+                          <option value="Ngokolo">Ngokolo</option>
+                          <option value="Old Shinyanga">Old Shinyanga</option>
                         </select>
                       </div>
                     </div>
+                    
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                       <div class="form-group">
                         <label>Role</label>
                         <select
                           class="form-control select2 select2-hidden-accessible"
                           style="width: 100%"
-                          data-select2-id="1"
-                          tabindex="-1"
-                          aria-hidden="true",
                           name="role"
+                          required
                         >
-                          <option selected="selected">Role</option>
-                          <option>WEO</option>
-                          <option>DC</option>
-                          <option>Member</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                      <div class="form-group">
-                        <label>Status</label>
-                        <select
-                          class="form-control select2 select2-hidden-accessible"
-                          style="width: 100%"
-                          data-select2-id="1"
-                          tabindex="-1"
-                          aria-hidden="true",
-                          name="status"
-                        >
-                          <option selected="selected">Status</option>
-                          <option>Active</option>
-                          <option>inactive</option>
+                          <option value="" selected="selected" disabled>Choose role</option>
+                          <option value="WEO">WEO</option>
+                          <option value="DC">DC</option>
+                          <option value="Member">Member</option>
                         </select>
                       </div>
                     </div>
@@ -245,15 +236,9 @@
               </div>
             </div>
           </div>
-    
-       
          </form>
-        
           </div>
         </section>
-        
-      
-    
         <!-- /.content -->
       </div>
       <!-- /.content-wrapper -->
@@ -269,9 +254,7 @@
       </aside>
       <!-- /.control-sidebar -->
     </div>
-    <!-- ./wrapper -->
-    
-      <!-- render messages -->
+  
     
       {% if messages %}
    
