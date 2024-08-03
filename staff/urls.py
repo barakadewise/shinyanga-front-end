@@ -3,10 +3,12 @@ from .import views
 
 urlpatterns = [
     path('admindashboard',views.adminDashboard,name="adminDashbaord"),
-    path('viewmembers',views.getMembers,name="Viewmembers"),
+    path('viewmembers',views.getMembers,name="viewMembers"),
     path('addmember',views.addMember,name="addmember"),
     path('editMmember',views.editMember,name="editMmember"),
-    path('deleteMmember',views.deleteMember,name="deleteMember")
+    path('deleteMmember',views.deleteMember,name="deleteMember"),
+    path('allusers',views.getAllUsers,name="allusers"),
+    path('deleteAccount',views.deleteAccount,name="deleteUserAccount")
  
 ]
 

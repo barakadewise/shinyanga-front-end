@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from api.api import ApiService
 
 from django.contrib import messages
@@ -87,19 +87,58 @@ def getMembers(request):
   return render(request,'members.html',context)
 
 
+def getAllUsers(request):
+    #grapghql endpoint 
+    query ='''
+       query{
+        findAllAccounts{
+          id
+          email
+          role
+           }
+       }
+    '''
+    respone =api.performQuery(query,api.getCsrfToken(request))
+    if 'errors' in respone:
+        print("======ERRRO======\n",respone)
+        return HttpResponse(messages.error(request,"Something went Wrong!"))
+
+    context={
+        'accounts':respone['data']['findAllAccounts']
+    }
+    return render(request,"allusers.html",context)
+
+def deleteAccount(request):
+    mutation ='''
+         mutation($ID:Float!) {
+          deleteAccount(accountId: $ID) {
+           message
+            statusCode
+             }
+           }
+     '''
+    
+    if request.method =="POST":
+        accountId= request.POST.get('id')
+        response= api.performMuttion(mutation,{"ID":int(accountId)})
+        if 'errors' in response:
+             return HttpResponse(messages.error(request,response['errors'][0]['message']))
+        print(response)
+        return HttpResponse(messages.success(request,"Account Sussccessfully deleted!"))
+            
+
 def addMember(request):
     if request.method == "POST":
-        # Extracting form data
+      
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         region = request.POST.get('Region')
-        profession= request.POST.get('district')
         ward = request.POST.get('Ward')
         role = request.POST.get('role')
-        status = request.POST.get('status')
+      
 
         # Account creation mutation
         accountMutation = '''
@@ -120,7 +159,7 @@ def addMember(request):
         }
 
         if password == confirm_password:
-            if role != "Role" and status != "Status":
+            if role != "Role":
                 try:
                     # Perform account creation mutation
                     account_response = api.performMuttion(accountMutation, accountVariables)
@@ -254,14 +293,10 @@ def deleteMember(request):
     '''
     if request.method =="POST":
         id =request.POST.get('id')
-
-
         response=api.performMuttion(mutation,{"id":int(id)})
 
         if 'errors' in response:
-            messages.error(request,"Failed to delete Member")
-            return JsonResponse()
+            return HttpResponse(  messages.error(request,"Failed to delete Member"))
         
-        messages.success(request,"Successfully deleted")
-        return JsonResponse()
+        return HttpResponse( messages.success(request,"Successfully deleted"))
 
