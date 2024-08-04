@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{% block title %} Donations | Panel {% endblock %}</title>
+
+{% block content %}
+
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+
+      
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Members Donations</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Members</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="float-right">
+                                <button type="button" class="btn btn-block btn-primary btn-md" data-toggle="modal" data-target="#addDonationModal">
+                                    Add Donation
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Donor ID</th>
+                                        <th>Donor Name</th>
+                                        <th>Donated For</th>
+                                        <th>Amount</th>
+                                        <th>Date Donated</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for donation in donations %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ donation.donorName }}</td>
+                                        <td>{{ donation.donationFor }}</td>
+                                        <td>{{ donation.amount }}</td>
+                                        <td>{{ donation.createdAt }}</td>
+                                        <td class="justify-content-center">
+                                            <button class="btn btn-success btn-sm edit-btn" data-toggle="modal"
+                                                data-target="#editModal" data-id="{{ donation.id }}"
+                                                data-donor-id="{{ donation.donorName }}" data-donor-name="{{ donation.donor.name }}"
+                                                data-donation-for="{{ donation.donationFor }}" data-amount="{{ donation.amount }}"
+                                               >
+                                                <i class="fas fa-pen"></i> Edit
+                                            </button>
+                                            <a href="#" class="btn btn-danger btn-sm delete-btn" data-toggle="modal"
+                                                data-target="#deleteModal" data-id="{{ donation.id }}">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+     <!-- Add Donation Modal -->
+     <div class="modal fade" id="addDonationModal" tabindex="-1" role="dialog" aria-labelledby="addDonationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDonationModalLabel">Add Donation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDonationForm" method="post" action="{% url 'addDonation' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="donor">Donor</label>
+                            <select class="form-control" id="donor" name="donor" required>
+                                <option value="" selected disabled>Select Donor</option>
+                                {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="amount">Amount</label>
+                            <input type="number" class="form-control" id="amount" name="amount" required >
+                        </div>
+                        <div class="form-group">
+                            <label for="donor">Donation for</label>
+                            
+                            <select class="form-control"  id="donatedEvent" name="donatedEvent" required>
+                                <option value="" selected disabled>Select Donated event</option>
+                                {% for donation in donatedEvents %}
+                                <option value="{{ donation.agenda }}">{{ donation.agenda }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="saveDonation" >Save Donation</button>
+                </div>
+
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   <!-- Edit Donation Modal -->
+   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Donation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" id="editId">
+                   
+                    <div class="form-group">
+                        <label for="editAmount">Amount</label>
+                        <input type="number" class="form-control" id="editAmount" name="editAmount">
+                    </div>
+                    <div class="form-group">
+                        <label for="editDonationFor">Donation For</label>
+                        <input type="text" class="form-control" id="editDonationFor" name="editDonationFor">
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this member?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>2023</b></div>
+        <strong>Copyright &copy; Shinyanga Community platform.</strong>
+        All rights reserved.
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+
+{% if messages %}
+   
+<script>
+  var messages = [];
+</script>
+{% for message in messages %}
+<script>
+  messages.push({
+    "message": "{{ message.message }}",
+    "tag": "{{ message.tags }}"
+  });
+</script>
+{% endfor %}
+{% endif %}
+
+
+<script>
+    $(document).ready(function () {
+        $('#example1').DataTable();
+
+        // Populate the edit modal with the existing data
+        $('.edit-btn').on('click', function () {
+            const id = $(this).data('id');
+            const donorId = $(this).data('donor-id');
+            const donorName = $(this).data('donor-name');
+            const donationFor = $(this).data('donation-for');
+            const amount = $(this).data('amount');
+            const dateDonated = $(this).data('date-donated');
+
+            $('#editId').val(id);
+            $('#editDonor').val(donorId);
+            $('#editAmount').val(amount);
+            $('#editDonationFor').val(donationFor);
+            $('#editDateDonated').val(dateDonated);
+        });
+
+        // Save changes in the edit modal
+        $('#saveChanges').on('click', function () {
+            const id = $('#editId').val();
+            const donorId = $('#editDonor').val();
+            const amount = $('#editAmount').val();
+            const donationFor = $('#editDonationFor').val();
+            const dateDonated = $('#editDateDonated').val();
+            
+
+            $.ajax({
+                url: `{% url 'addDonation' %}`,
+                type: 'POST',
+                data: {
+                    'id': id,
+                    'donor': donorId,
+                    'amount': amount,
+                    'donationFor': donationFor,
+                    'dateDonated': dateDonated,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        });
+
+        // Handle delete button click
+        $('.delete-btn').on('click', function () {
+            const id = $(this).data('id');
+            $('#confirmDelete').data('id', id);
+        });
+
+        // Confirm delete action
+        $('#confirmDelete').on('click', function () {
+            const id = $(this).data('id');
+
+            $.ajax({
+                url: `{% url 'addDonation' %}`,
+                type: 'POST',
+                data: {
+                    'id': id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        });
+
+        // Save new donation
+        // $('#saveDonation').on('click', function () {
+        //     const donorId = $('#donor').val();
+        //     const amount = $('#amount').val();
+        //     const donationFor = $('#donationFor').val();
+
+        //     $.ajax({
+        //         url: `{% url 'addDonation' %}`,
+        //         type: 'POST',
+        //         data: {
+        //             'donor': donorId,
+        //             'amount': amount,
+        //             'donationFor': donationFor,
+        //             'csrfmiddlewaretoken': '{{ csrf_token }}'
+        //         },
+        //         success: function (response) {
+        //             location.reload();
+        //         }
+        //     });
+        // });
+    });
+</script>
+
+<script>
+  $(function(){
+    messages.forEach(function(message) {
+      if (message.tag === "success") {
+        toastr.success(message.message);
+      } else if (message.tag=== "error") {
+        toastr.error(message.message); 
+      } else {
+        
+        toastr.info(message.message);
+      }
+    });
+  });
+</script>
+
+{% endblock %}
