@@ -136,6 +136,7 @@ def addMember(request):
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         region = request.POST.get('Region')
+        profession=request.POST.get('profession')
         ward = request.POST.get('Ward')
         role = request.POST.get('role')
       
@@ -168,7 +169,7 @@ def addMember(request):
                     if 'errors' in account_response:
                         error_message = account_response['errors'][0]['message']
                         messages.error(request,error_message)
-                        print(error_message)
+                      
                        
 
                     # If there are no errors, continue with member creation
@@ -177,13 +178,14 @@ def addMember(request):
 
                         # Member creation mutation
                         memberMutation = '''
-                          mutation ($name: String!, $region: String!, $ward: String!, $phone: String!, $accountId: Float!) {
+                          mutation ($name: String!, $region: String!, $ward: String!, $phone: String!,$profession: String!, $accountId: Float!) {
                             createUser(
                               createUserInput: {
                                 name: $name,
                                 region: $region,
                                 ward: $ward,
                                 phone: $phone,
+                                profession:$profession,
                                 accountId: $accountId
                               }
                             ) {
@@ -198,7 +200,8 @@ def addMember(request):
                             "region": region,
                             "ward": ward,
                             "phone": phone,
-                            "accountId": account_id
+                            "accountId": account_id,
+                            "profession":profession
                         }
                         
                         if account_response['data']['createStaffOrMemberAccount']['role']=='Member':
@@ -206,26 +209,27 @@ def addMember(request):
                             if 'data' in member_response:
                                 print('Member created successfuly',member_response)
                                 messages.success(request,"Member created successfully.")
-                                return redirect('members')
+                                return redirect('viewMembers')
+                            
                             elif 'errors' in member_response: 
                                 print("Error creating member.",member_response)
                                 messages.error(request,"Error creating member") 
-                    
-                            else:
-                                messages.error(request,'Something went wrong!')       
-                            
+                                return redirect('addmember')
             
                 except Exception as e:
                     print("An error occurred:")
                     messages.error(request,"An error occurred:", str(e))
+                    return redirect('addmember')
                   
             else:
-                print("Role or status is not correct.")
-                messages.error(request,"Role or status is not correct.")
+               
+                messages.error(request,"Role is  not  correct.")
+                return redirect('addmember')
               
         else:
             print('Password mismatch error.')
             messages.error(request,"Password mismatch error.")
+            return redirect('addmember')
 
     return render(request, 'add_member.html')
 
