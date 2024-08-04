@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse,HttpResponse
 from api.api import ApiService
-
+from dateutil import parser
 from django.contrib import messages
 
 
@@ -300,3 +300,101 @@ def deleteMember(request):
         
         return HttpResponse( messages.success(request,"Successfully deleted"))
 
+
+
+
+def viewDonation(request):
+    query = '''
+        query {
+          findAllEvents {
+            id
+            agenda
+            coverage
+          }
+        }
+    '''
+
+    query_users = '''
+        query {
+          findAllUsers {
+            id
+            name
+          }
+        }
+    '''
+  
+    queryDonations = '''
+        query {
+            findAllDonations {
+                id
+                createdAt
+                donationFor
+                donorName
+                amount
+            }
+        }
+    '''
+  
+    donationResponse = api.performQuery(queryDonations, api.getCsrfToken(request))
+    donatedEventResponse = api.performQuery(query, api.getCsrfToken(request))
+    userResponse = api.performQuery(query_users, api.getCsrfToken(request))
+  
+    # Format the donation data
+    formatted_donations = []
+    for donation in donationResponse['data']['findAllDonations']:
+       
+        created_at = donation['createdAt']
+        dt = parser.isoparse(created_at)  # Use dateutil.parser to handle the ISO 8601 format
+        formatted_date = dt.strftime('%Y-%m-%d')  # Format the date without time
+        donation['createdAt'] = formatted_date
+        formatted_donations.append(donation)
+    
+    context = {
+        'donations': formatted_donations,
+        'donatedEvents': donatedEventResponse['data']['findAllEvents'],
+        'users': userResponse['data']['findAllUsers']
+    }
+    return render(request, "donations.html", context)
+
+
+def addDonation(request):
+    mutation = '''
+    mutation AddNewDonation($amount: Int!, $donationFor: String!, $userId: Float!) {
+      addNewDonation(
+        createDonationInput: { amount: $amount, donationFor: $donationFor }
+        userId: $userId
+      ) {
+        id
+        userId
+      }
+    }
+    '''
+
+    if request.method == 'POST':
+        # Retrieve form data
+        amount = request.POST.get('amount')
+        donor = request.POST.get('donor')
+        donatedEvent = request.POST.get('donatedEvent')
+      
+
+        # Prepare variables for the mutation
+        variables = {
+            "amount": int(amount),  
+            "donationFor": donatedEvent,
+            "userId": int(donor),  
+        }
+
+        # Perform the mutation
+        response = api.performMuttion(mutation, variables)
+        
+        # Check for errors in the response
+        if 'errors' in response:
+            print("======== ERRORS ========\n", response)
+            messages.error(request, "Failed: Something went wrong")
+            return redirect('viewDonations')
+        
+        # Success message
+        messages.success(request, "Successfully added!")
+        return redirect('viewDonations')
+
+    
