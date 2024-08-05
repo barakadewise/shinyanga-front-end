@@ -1,0 +1,185 @@
+{% extends 'member_base.html' %}
+{% load static %}
+
+<title>{% block title %} Donations | Panel {% endblock %}</title>
+
+{% block content %}
+
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+
+      
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Donations Made</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Donations</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Donor Name</th>
+                                        <th>Donated For</th>
+                                        <th>Amount</th>
+                                        <th>Date Donated</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for donation in donations %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ donation.donorName }}</td>
+                                        <td>{{ donation.donationFor }}</td>
+                                        <td>{{ donation.amount }}</td>
+                                        <td>{{ donation.createdAt }}</td>
+                                      
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>2023</b></div>
+        <strong>Copyright &copy; Shinyanga Community platform.</strong>
+        All rights reserved.
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+
+{% if messages %}
+   
+<script>
+  var messages = [];
+</script>
+{% for message in messages %}
+<script>
+  messages.push({
+    "message": "{{ message.message }}",
+    "tag": "{{ message.tags }}"
+  });
+</script>
+{% endfor %}
+{% endif %}
+
+
+<script>
+    $(document).ready(function () {
+        $('#example1').DataTable();
+
+        // Handle delete button click
+        $('.delete-btn').on('click', function () {
+            const id = $(this).data('id');
+            $('#confirmDelete').data('id', id);
+        });
+
+        // Confirm delete action
+        $('#confirmDelete').on('click', function () {
+            const id = $(this).data('id');
+
+            $.ajax({
+                url: `{% url 'addDonation' %}`,
+                type: 'POST',
+                data: {
+                    'id': id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        });
+
+      
+    });
+</script>
+
+<script>
+  $(function(){
+    messages.forEach(function(message) {
+      if (message.tag === "success") {
+        toastr.success(message.message);
+      } else if (message.tag=== "error") {
+        toastr.error(message.message); 
+      } else {
+        
+        toastr.info(message.message);
+      }
+    });
+  });
+</script>
+
+{% endblock %}
