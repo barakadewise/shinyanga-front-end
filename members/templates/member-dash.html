@@ -52,8 +52,14 @@
             </div>
           </li>
         </ul>
+        <div class="float-right px-2">
+          <img src="{% static 'dist/img/user.png' %}" 
+          style="opacity: 0.8;width: 40px; height: 40px;"
+          class="brand-image img-circle elevation-1" alt="user">
+          <h6 class="font-weight-bold pt-1">{{user_name }}</h6>
+        </div>
       </nav>
-      <!-- /.navbar -->
+  
 
   
       <!-- Content Wrapper. Contains page content -->
@@ -92,7 +98,7 @@
                   style="background-color: rgb(132, 165, 132)"
                 >
                   <div class="inner">
-                    <h3 class="text-light"><i class="fa fa-book"></i>  {{total_events }}</h3>
+                    <h3 class="text-light"><i class="fa fa-book"></i>  {{ events }}</h3>
                     <p
                       class="text-light"
                       style="font-weight: 600; font-size: x-large"
@@ -110,14 +116,14 @@
               </div>
               <!-- ./col -->
               <div class="col-lg-3 col-6">
-                <!-- small box -->
+            
                 <div
                   class="small-box"
                   style="background-color: rgb(142, 142, 146)"
                 >
                   <div class="inner">
                     <h3 style="color: rgb(44, 44, 78)">
-                      <i class="fa fa-users"></i> {{ total_users }}
+                      <i class="fa fa-users"></i> {{ members }}
                     </h3>
                     <p
                       style="
@@ -140,11 +146,11 @@
             </div>
             <!-- /.row -->
           </div>
-          <!-- /.container-fluid -->
+       
         </section>
-        <!-- /.content -->
+
       </div>
-      <!-- /.content-wrapper -->
+  
       <footer class="main-footer">
         <strong
           >Copyright &copy; 2014-2019

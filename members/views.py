@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from api.api import ApiService
+from dateutil import parser
 
 api = ApiService()
 #member dashboard
 def memberDashboard(request):
-  
+    token = request.session['token']
     query ='''
         query {
         getUserProfile {
@@ -13,8 +14,24 @@ def memberDashboard(request):
         }
        }
     '''
-    token=request.session.get('token')
-    print(token)
+    query_users = '''
+    query {
+      findAllUsers {
+        id
+      }
+    }
+    '''
+    query_events = '''
+    query {
+      findAllEvents {
+        id
+      }
+    }
+    '''
+    
+    events =api.performQuery(query_events,api.getCsrfToken(request))
+    members=api.performQuery(query_users,api.getCsrfToken(request))
+    
     response = api.performQueryWithToken(query,api.getCsrfToken(request),token)
     if 'errors' in response:
         print(response['errors'])
@@ -24,7 +41,12 @@ def memberDashboard(request):
         return redirect('login')
     else:
         print("profile:",response)
-        return render(request,'member-dash.html')
+        context={
+            "events":len(events['data']['findAllEvents']),
+            "members":len(members['data']['findAllUsers'])
+        }
+        print(context)
+        return render(request,'member-dash.html',context)
 
 
 #view events
@@ -100,3 +122,29 @@ def getUserName(request):
     
 
 
+def getDonations(request):
+    queryDonations = '''
+        query {
+            findAllDonations {
+                id
+                createdAt
+                donationFor
+                donorName
+                amount
+            }
+        }
+    '''
+  
+    donationResponse = api.performQuery(queryDonations, api.getCsrfToken(request))
+    formatted_donations = []
+    for donation in donationResponse['data']['findAllDonations']:
+       
+        created_at = donation['createdAt']
+        dt = parser.isoparse(created_at)  # Use dateutil.parser to handle the ISO 8601 format
+        formatted_date = dt.strftime('%Y-%m-%d')  # Format the date without time
+        donation['createdAt'] = formatted_date
+        formatted_donations.append(donation)
+    context={
+        "donations":formatted_donations
+    }
+    return render(request,"member-donation.html",context)

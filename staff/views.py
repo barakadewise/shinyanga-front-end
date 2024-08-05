@@ -33,7 +33,6 @@ def adminDashboard(request):
       '''
 
     token = request.session.get('token')
-    # print("retrieved token:",token)
     
     profile_respone=api.performQueryWithToken(queryP,api.getCsrfToken(request),token)
 
@@ -43,7 +42,7 @@ def adminDashboard(request):
         request.session.clear()
         return redirect('login')
     else:
-        # messages.success(request,'Successfully loggedin!')
+     
         print("profile:",profile_respone['data']['getStaffProfile'])
         response_users = api.performQuery(query_users,api.getCsrfToken(request))
         response_events = api.performQuery(query_events,api.getCsrfToken(request))

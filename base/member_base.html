@@ -1,4 +1,7 @@
 {% load static %}
+
+
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -43,76 +46,89 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
   </head>
   <body class="hold-transition sidebar-mini layout-fixed">
-       <!-- Main Sidebar Container -->
-   <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgb(243, 236, 236);"></aside>>
-    <!-- Brand Logo -->
-    <a href="" class="brand-link">
-      <img
-        src="{% static 'dist/img/user.png' %}"
-        class="brand-image img-circle elevation-3"
-        alt="User Image"
-        style="opacity: 0.8"
-      />
-      <span class="brand-text font-weight-light">{{ user_name }}</span>
-    </a>
+    <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color: rgb(243, 236, 236);">
+      <!-- Brand Logo -->
+       <div class="brand-link d-flex flex-column align-items-center justify-content-center ">
+        <img
+          src="{% static 'dist/img/logo.png' %}"
+          class=" img-circle elevation-1"
+          alt="logo"
+          style="opacity: 0.8; height: 90px; width: 90px;"
+        />
+        
+        <h5 class="brand-text font-weight-bold">Shinyanga Community </h5>
+       </div >
+  
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul
-          class="nav nav-pills nav-sidebar flex-column"
-          data-widget="treeview"
-          role="menu"
-          data-accordion="false"
-        >
-         
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a
-                  href=""
-                  class="nav-link active"
-                >
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Overview</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'viewEvents' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Events</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'viewmembers' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Members</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'logout' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Logout</p>
-                </a>
-              </li>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link {% if request.path == '/admindashboard' %}active{% endif %}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'memberDashboard' %}" class="nav-link {% if request.path == '/memberDashboard' %}active{% endif %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-speedometer" viewBox="0 0 16 16">
+                                    <path d="M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 1-1 0V2.5A.5.5 0 0 1 8 2M3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.39.39 0 0 0-.029-.518z"/>
+                                    <path fill-rule="evenodd" d="M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.95 11.95 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0"/>
+                                </svg>
+                                <p>Overview</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'members' %}" class="nav-link {% if request.path == '/members' %}active{% endif %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                                </svg>
+                                <p>Members</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'viewEvents' %}" class="nav-link {% if request.path == '/viewEvents' %}active{% endif %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar4-event" viewBox="0 0 16 16">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+                                    <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+                                </svg>
+                                <p>Events</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'memeberdonation' %}" class="nav-link {% if request.path == '/memberdonation' %}active{% endif %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                                    <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/>
+                                    <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
+                                    <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
+                                </svg>
+                                <p>Donations</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'logout' %}" class="nav-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                </svg>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+        </nav>
+       
     </div>
-    <!-- /.sidebar -->
-  </aside>
+    
+      <!-- /.sidebar -->
+    </aside>
     {% block content %}
 
    
@@ -134,9 +150,7 @@
   
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 
-      <!-- jQuery Knob Chart -->
-      <!-- <script src="{% static 'plugins/jquery-knob/jquery.knob.min.js' %}"></script> -->
-      <!-- daterangepicker -->
+      
       <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
       <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
       <!-- Tempusdominus Bootstrap 4 -->

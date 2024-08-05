@@ -15,12 +15,10 @@
             ></a>
           </li>
         </ul>
-
-        <!-- SEARCH FORM -->
-
+        
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
-          <!-- Notifications Dropdown Menu -->
+       
           <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
               <i class="far fa-bell"></i>
@@ -52,15 +50,17 @@
             </div>
           </li>
         </ul>
+        <div class="float-right px-2">
+          <img src="{% static 'dist/img/user.png' %}" 
+          style="opacity: 0.8;width: 40px; height: 40px;"
+          class="brand-image img-circle elevation-1" alt="user">
+          <h6 class="font-weight-bold pt-1">{{user_name }}</h6>
+        </div>
       </nav>
-      <!-- /.navbar -->
-
-      <!-- Main Sidebar Container -->
-   
+    <!----END NAV -->
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <div class="content-header">
           <div class="container-fluid">
             <div class="row mb-2">

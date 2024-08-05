@@ -3,8 +3,9 @@ from .import views
 
 
 urlpatterns = [
- path('viewmembers',views.viewMember,name="viewmembers"),
+ path('members',views.viewMember,name="members"),
  path('viewEvents',views.viewEvents,name="viewEvents"),
+ path('memberdonation',views.getDonations,name='memeberdonation'),
  path('memberDashboard',views.memberDashboard,name="memberDashboard")
    
 ]
