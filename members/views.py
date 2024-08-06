@@ -6,6 +6,7 @@ from dateutil import parser
 api = ApiService()
 #member dashboard
 def memberDashboard(request):
+    context ={}
     token = request.session['token']
     query ='''
         query {
@@ -28,7 +29,16 @@ def memberDashboard(request):
       }
     }
     '''
-    
+  
+    query='''
+    query{
+  getNotificationRequest{
+    message,
+    statusCode
+  }
+}
+    '''
+    responseNotification= api.performQueryWithToken(query,api.getCsrfToken(request) , token)
     events =api.performQuery(query_events,api.getCsrfToken(request))
     members=api.performQuery(query_users,api.getCsrfToken(request))
     
@@ -40,13 +50,23 @@ def memberDashboard(request):
         request.session.clear()
         return redirect('login')
     else:
-        print("profile:",response)
-        context={
+        if responseNotification['data']['getNotificationRequest']['statusCode']==200:
+            context={
+            "notification":responseNotification['data']['getNotificationRequest']['message'],
+             "events":len(events['data']['findAllEvents']),
+            "members":len(members['data']['findAllUsers'])
+             }
+            print(context)
+            return render(request,'member-dash.html',context)
+        else:
+
+          context={
+
             "events":len(events['data']['findAllEvents']),
             "members":len(members['data']['findAllUsers'])
-        }
-        print(context)
-        return render(request,'member-dash.html',context)
+             }
+          return render(request,'member-dash.html',context)
+    
 
 
 #view events
@@ -148,3 +168,65 @@ def getDonations(request):
         "donations":formatted_donations
     }
     return render(request,"member-donation.html",context)
+
+
+def sendRequest(request,memberId):
+    token = request.session['token']
+    mutation='''
+     mutation($memberId:Float!) {
+     createRequest(createRequestInput: { requestedId: $memberId }) {
+       id
+     }
+    }
+
+
+    '''
+    if request.method=='POST':
+        resposne = api.performMuttion(mutation,{"memberId":int(memberId)},token)
+        if 'errors' in resposne:
+            print("====ERRRORS====\n",resposne)
+            messages.error(request,"Failed to send request")
+            return redirect('members')
+        
+        messages.success(request,"successfully!")
+        return redirect('members')
+        
+    return redirect('members')
+   
+# #get all user request
+# def currentUseViewRequest(request):
+#     token =request.session['token']
+#     query='''
+#       query{
+#    getCurrentUserRequest{
+#     id,
+#     requstingId,
+#     requestedId
+#   }
+# }
+
+#    '''
+#     response = api.performQueryWithToken(query,api.getCsrfToken(request),token)
+#     context={
+#         "requests":response['data']['getCurrentUserRequest']
+#     }
+#     return render(request,'')
+
+# def getNotificationRequest(request):
+#     token = request.session['token']
+#     query='''
+#     query{
+#   getNotificationRequest{
+#     message,
+#     statusCode
+#   }
+# }
+#     '''
+#     response= api.performQueryWithToken(query,token)
+#     if response['data']['getNotificationRequest']['statusCode']==200:
+#         context ={
+#             "notification":response['data']['getNotificationRequest']['message']
+#         }
+#         return render()
+
+    

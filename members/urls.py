@@ -6,7 +6,8 @@ urlpatterns = [
  path('members',views.viewMember,name="members"),
  path('viewEvents',views.viewEvents,name="viewEvents"),
  path('memberdonation',views.getDonations,name='memeberdonation'),
- path('memberDashboard',views.memberDashboard,name="memberDashboard")
+ path('memberDashboard',views.memberDashboard,name="memberDashboard"),
+ path('sendRequest/<int:memberId>',views.sendRequest,name='sendRequest')
    
 ]
 

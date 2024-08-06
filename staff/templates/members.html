@@ -85,7 +85,7 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Member ID</th>
+                                        <th>S/N</th>
                                         <th>Name</th>
                                         <th>Profession(s)</th>
                                         <th>Ward</th>
@@ -99,7 +99,7 @@
                                 <tbody>
                                     {% for user in users %}
                                     <tr>
-                                        <td>{{ user.id }}</td>
+                                        <td>{{ forloop.counter  }}</td>
                                         <td>{{ user.name }}</td>
                                         <td>{{ user.profession }}</td>
                                         <td>{{ user.ward }}</td>

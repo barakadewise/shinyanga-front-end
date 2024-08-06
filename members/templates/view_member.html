@@ -71,7 +71,7 @@
               </div>
             </div>
           </div>
-          <!-- /.container-fluid -->
+   
         </section>
 
         <!-- Main content -->
@@ -80,9 +80,9 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                   <h4>All members </h4>
+                   <h5 class="text-info" style="font-weight:400;">Click Send request once confirmed you will be able to view contacts </h5>
                 </div>
-                <!-- /.card-header -->
+                 
                 <div class="card-body">
                   <table
                     id="example1"
@@ -95,23 +95,36 @@
                         <th>Proffession(s)</th>
                         <th>ward</th>
                         <th>Region</th>
-                        <th>Phone</th>
-                        <th>Email</th>
+                        <!-- <th>Phone</th>
+                        <th>Email</th> -->
                         <th>Status</th>
+                        <th>Request</th>
                       
                       </tr>
                     </thead>
                     <tbody>
                    {% for user in users %}
                       <tr>
-                        <td>{{ user.id }}</td>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.profession }}</td>
                         <td>{{ user.ward }}</td>
                         <td>{{ user.region }}</td>
-                        <td>{{ user.phone }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.status }}</td>
+                        <!-- <td>{{ user.phone }}</td>
+                        <td>{{ user.email }}</td> -->
+                        <td>
+                          {% if user.status == 'active' %}
+                          <span class="badge-pill badge-success">active</span>
+                          {% else %}
+                          <span class="badge-pill  badge-danger">inactive</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          <form action="{% url 'sendRequest' user.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info">Send Request</button>
+                        </form>
+                        </td>
 
                       </tr>
                       {% endfor %}
@@ -119,7 +132,7 @@
                     <tfoot></tfoot>
                   </table>
                 </div>
-                <!-- /.card-body -->
+             
               </div>
               <!-- /.card -->
             </div>
@@ -186,8 +199,7 @@
     <!-- ./wrapper -->
 
  
-    <!-- AdminLTE for demo purposes -->
-    <script src="../../dist/js/demo.js"></script>
+    
     <!-- page script -->
     <script>
       $(function () {
@@ -229,5 +241,19 @@
         });
       });
     </script>
+    {% if messages %}
+   
+    <script>
+      var messages = [];
+    </script>
+    {% for message in messages %}
+    <script>
+      messages.push({
+        "message": "{{ message.message }}",
+        "tag": "{{ message.tags }}"
+      });
+    </script>
+    {% endfor %}
+    {% endif %}
 
   {% endblock %}
